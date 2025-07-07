@@ -1,0 +1,105 @@
+using System;
+
+namespace ListaBusqueda
+{
+    // Clase Nodo representa un elemento de la lista enlazada
+    class Nodo
+    {
+        public int Valor;
+        public Nodo Siguiente;
+
+        public Nodo(int valor)
+        {
+            Valor = valor;
+            Siguiente = null;
+        }
+    }
+
+    // Clase ListaEnlazada para manejar la lista y sus operaciones
+    class ListaEnlazada
+    {
+        private Nodo cabeza;
+
+        // Agrega un nuevo nodo al final de la lista
+        public void Agregar(int valor)
+        {
+            Nodo nuevo = new Nodo(valor);
+            if (cabeza == null)
+            {
+                cabeza = nuevo;
+            }
+            else
+            {
+                Nodo actual = cabeza;
+                while (actual.Siguiente != null)
+                {
+                    actual = actual.Siguiente;
+                }
+                actual.Siguiente = nuevo;
+            }
+        }
+
+        // Muestra la lista completa
+        public void Mostrar()
+        {
+            Nodo actual = cabeza;
+            while (actual != null)
+            {
+                Console.Write(actual.Valor + " -> ");
+                actual = actual.Siguiente;
+            }
+            Console.WriteLine("null");
+        }
+
+        // Busca un valor y retorna cuántas veces aparece
+        public void Buscar(int valorBuscado)
+        {
+            Nodo actual = cabeza;
+            int contador = 0;
+
+            while (actual != null)
+            {
+                if (actual.Valor == valorBuscado)
+                {
+                    contador++;
+                }
+                actual = actual.Siguiente;
+            }
+
+            if (contador > 0)
+            {
+                Console.WriteLine($"El número {valorBuscado} se encontró {contador} veces en la lista.");
+            }
+            else
+            {
+                Console.WriteLine($"El número {valorBuscado} no fue encontrado en la lista.");
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ListaEnlazada lista = new ListaEnlazada();
+
+            // Agregar datos a la lista
+            lista.Agregar(5);
+            lista.Agregar(10);
+            lista.Agregar(5);
+            lista.Agregar(20);
+            lista.Agregar(5);
+
+            Console.WriteLine("Contenido de la lista:");
+            lista.Mostrar();
+
+            // Buscar número ingresado por el usuario
+            Console.WriteLine("Ingresa el número a buscar:");
+            int numero = Convert.ToInt32(Console.ReadLine());
+
+            lista.Buscar(numero);
+
+            Console.ReadLine(); // Pausa para ver resultados
+        }
+    }
+}

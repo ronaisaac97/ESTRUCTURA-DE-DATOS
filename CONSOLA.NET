@@ -1,0 +1,85 @@
+// Verificación de paréntesis balanceados
+using System;
+using System.Collections.Generic;
+
+class BalanceChecker
+{
+    public static bool EstaBalanceada(string expresion)
+    {
+        Stack<char> pila = new Stack<char>();
+
+        foreach (char c in expresion)
+        {
+            if (c == '(' || c == '[' || c == '{')
+                pila.Push(c);
+            else if (c == ')' || c == ']' || c == '}')
+            {
+                if (pila.Count == 0)
+                    return false;
+                char apertura = pila.Pop();
+                if (!EsPareja(apertura, c))
+                    return false;
+            }
+        }
+
+        return pila.Count == 0;
+    }
+
+    private static bool EsPareja(char apertura, char cierre)
+    {
+        return (apertura == '(' && cierre == ')') ||
+               (apertura == '[' && cierre == ']') ||
+               (apertura == '{' && cierre == '}');
+    }
+
+    static void Main()
+    {
+        Console.WriteLine("Ingrese una expresión matemática:");
+        string entrada = Console.ReadLine();
+
+        if (EstaBalanceada(entrada))
+            Console.WriteLine("Fórmula balanceada.");
+        else
+            Console.WriteLine("Fórmula no balanceada.");
+
+        // Ejecutar Torres de Hanoi como segundo ejercicio
+        Console.WriteLine("\nResolviendo Torres de Hanoi para 3 discos:");
+        TorresDeHanoi hanoi = new TorresDeHanoi(3);
+        hanoi.Resolver();
+    }
+}
+
+// Resolución del problema de las Torres de Hanoi
+class TorresDeHanoi
+{
+    private Stack<int>[] torres;
+    private int discos;
+
+    public TorresDeHanoi(int n)
+    {
+        discos = n;
+        torres = new Stack<int>[3];
+        for (int i = 0; i < 3; i++)
+            torres[i] = new Stack<int>();
+
+        for (int i = discos; i >= 1; i--)
+            torres[0].Push(i);
+    }
+
+    public void Resolver()
+    {
+        Mover(discos, 0, 2, 1);
+    }
+
+    private void Mover(int n, int origen, int destino, int auxiliar)
+    {
+        if (n > 0)
+        {
+            Mover(n - 1, origen, auxiliar, destino);
+            int disco = torres[origen].Pop();
+            torres[destino].Push(disco);
+            Console.WriteLine($"Mover disco {disco} de torre {origen + 1} a torre {destino + 1}");
+            Mover(n - 1, auxiliar, destino, origen);
+        }
+    }
+}

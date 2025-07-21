@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+
+namespace SimuladorAtraccion
+{
+    public class Persona
+    {
+        public string Nombre { get; set; }
+        public int NumeroAsiento { get; set; }
+
+        public Persona(string nombre, int asiento)
+        {
+            Nombre = nombre;
+            NumeroAsiento = asiento;
+        }
+
+        public void Mostrar()
+        {
+            Console.WriteLine($"Nombre: {Nombre}, Asiento: {NumeroAsiento}");
+        }
+    }
+
+    public class Atraccion
+    {
+        private Queue<Persona> cola = new Queue<Persona>();
+        private int totalAsientos = 30;
+        private int contadorAsiento = 1;
+
+        public void IngresarPersona(string nombre)
+        {
+            if (contadorAsiento <= totalAsientos)
+            {
+                Persona p = new Persona(nombre, contadorAsiento++);
+                cola.Enqueue(p);
+                Console.WriteLine($"Se asignó el asiento #{p.NumeroAsiento} a {p.Nombre}");
+            }
+            else
+            {
+                Console.WriteLine("Todos los asientos han sido ocupados.");
+            }
+        }
+
+        public void MostrarOcupantes()
+        {
+            Console.WriteLine("\nLista de personas que subirán a la atracción:");
+            foreach (var persona in cola)
+            {
+                persona.Mostrar();
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            Atraccion atraccion = new Atraccion();
+
+            Console.WriteLine("Simulador de asignación de asientos (máximo 30)");
+
+            for (int i = 1; i <= 32; i++)
+            {
+                Console.Write($"Ingrese el nombre de la persona #{i}: ");
+                string nombre = Console.ReadLine();
+                atraccion.IngresarPersona(nombre);
+            }
+
+            Console.WriteLine("\n=== Resultado Final ===");
+            atraccion.MostrarOcupantes();
+
+            Console.WriteLine("\nPresiona cualquier tecla para salir...");
+            Console.ReadKey();
+        }
+    }
+}
